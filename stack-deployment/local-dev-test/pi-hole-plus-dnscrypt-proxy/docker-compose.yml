@@ -1,0 +1,62 @@
+version: "3"
+
+services:
+  # Pi-hole, the blackhole for ads. In other words an ad blocker at the network level
+  pihole:
+    container_name: pihole
+    dns:
+      - 127.0.0.1
+    environment:
+      CONDITIONAL_FORWARDING: "true"
+      CONDITIONAL_FORWARDING_IP: "IP_OF_YOUR_ROUTER_OR_DEVICE_WHERE_YOU_CONFIGURED_THE_SEARCH_DOMAIN"
+      CONDITIONAL_FORWARDING_DOMAIN: "THE_SEARCH_DOMAIN_YOU_PUSH_VIA_DHCP"
+      DNS_BOGUS_PRIV: "true"
+      DNSMASQ_LISTENING: "local"
+      DNS1: "127.0.0.1#5353"
+      DNS2: "IP_OF_THE_HOST_RUNNING_DNSCRYPT_PROXY#5353"
+      DNSSEC: "true"
+      ServerIP: "IP_OF_THE_HOST_RUNNING_PIHOLE"
+      TZ: 'Europe/Copenhagen'
+      WEB_PORT: "808"
+    # Change the vX.X number to the Pi-Hole version you want
+    image: pihole/pihole:4.3.2-1
+    networks:
+      static-network:
+        ipv4_address: 172.20.128.1
+    #network_mode: "host"
+    ports:
+      - "127.0.0.1:53:53/tcp"
+      - "127.0.0.1:53:53/udp"
+      - "127.0.0.1:67:67/udp"
+      - "127.0.0.1:808:808/tcp"
+      - "127.0.0.1:443:443/tcp"
+    restart: unless-stopped
+    # Volumes store your data between container upgrades
+    volumes:
+       # etc/pihole & etc/dnsmasq.d mapped to save data outside the container. To be able to e.g. upgrade without dataloss
+       - "./conf/etc-pihole/:/etc/pihole/"
+       - "./conf/etc-dnsmasq.d/:/etc/dnsmasq.d/"
+       # This volume mapping should only be necessary if on a QNAP or similar device
+       - "./conf/resolv.conf:/etc/resolv.conf:ro"
+  # DNSCrypt-Proxy. To wrap Pi-hole DNS request in encryption. The proxy forwards requests to the dnscrypt-server
+  dnscrypt-proxy:
+    container_name: dnscrypt-proxy
+    environment:
+      DNSCRYPT_LISTEN_PORT: "5353"
+      DNSCRYPT_SERVER_NAMES: "['hush.dns']"
+    image: djaydev/dnscrypt-proxy@sha256:66894f8c539917f6dc1a919a239d287e53ba88a832eb171e0210564ceb867171
+    networks:
+      static-network:
+        ipv4_address: 172.20.128.2
+    ports:
+      - "127.0.0.1:5353:5353"
+    #network_mode: "host"
+    restart: unless-stopped
+    volumes:
+      - "./conf/dnscrypt-proxy.toml:/config/dnscrypt-proxy.toml"
+
+networks:
+  static-network:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

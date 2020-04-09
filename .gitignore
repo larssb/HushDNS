@@ -1,0 +1,5 @@
+# Files to be ignored
+.DS_Store
+
+# Folders to be ignored
+/stack-deployment/local-dev-test/pi-hole-plus-dnscrypt-proxy/conf

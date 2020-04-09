@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  pihole:
+    container_name: pihole
+    dns:
+      - 127.0.0.1
+    environment:
+      CONDITIONAL_FORWARDING: "true"
+      CONDITIONAL_FORWARDING_IP: "IP_OF_YOUR_ROUTER_OR_DEVICE_WHERE_YOU_CONFIGURED_THE_SEARCH_DOMAIN"
+      CONDITIONAL_FORWARDING_DOMAIN: "THE_SEARCH_DOMAIN_YOU_PUSH_VIA_DHCP"
+      DNS_BOGUS_PRIV: "true"
+      DNSMASQ_LISTENING: "local"
+      DNS1: "127.0.0.1#5354"
+      DNS2: "IP_OF_THE_HOST_RUNNING_DNSCRYPT_PROXY#5354"
+      ServerIP: "IP_OF_THE_HOST_RUNNING_PIHOLE"
+      TZ: 'Europe/Copenhagen'
+      WEB_PORT: "808"
+    # Change the vX.X number to the Pi-Hole version you want
+    image: pihole/pihole:v4.4
+    network_mode: "host"
+    restart: unless-stopped
+    # Volumes store your data between container upgrades
+    volumes:
+       # etc/pihole & etc/dnsmasq.d mapped to save data outside the container. To be able to e.g. upgrade without dataloss
+       - "./etc-pihole/:/etc/pihole/"
+       - "./etc-dnsmasq.d/:/etc/dnsmasq.d/"
+       # This volume mapping should only be necessary if on a QNAP or similar device
+       - "./resolv.conf:/etc/resolv.conf:ro"

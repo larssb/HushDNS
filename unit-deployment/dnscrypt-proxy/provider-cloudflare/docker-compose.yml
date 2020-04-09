@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  dnscrypt-proxy:
+    container_name: dnscrypt-proxy
+    environment:
+      DNSCRYPT_LISTEN_PORT: "5353"
+      DNSCRYPT_SERVER_NAMES: "['cloudflare']"
+    image: djaydev/dnscrypt-proxy@sha256:66894f8c539917f6dc1a919a239d287e53ba88a832eb171e0210564ceb867171
+    network_mode: "host"
+    restart: unless-stopped
