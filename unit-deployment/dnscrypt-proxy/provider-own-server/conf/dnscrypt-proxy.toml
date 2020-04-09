@@ -27,7 +27,7 @@
 server_names = ['hush.dns']
 
 ## List of local addresses and ports to listen to. Can be IPv4 and/or IPv6.
-listen_addresses = ['0.0.0.0:5354']
+listen_addresses = ['0.0.0.0:5053']
 
 ## Maximum number of simultaneous client connections to accept
 max_clients = 250
