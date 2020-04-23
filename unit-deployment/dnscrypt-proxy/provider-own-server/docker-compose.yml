@@ -1,8 +1,14 @@
-version: "3"
+version: '3.4'
 
 services:
   dnscrypt-proxy:
     container_name: dnscrypt-proxy
+    healthcheck:
+      test: ["CMD", "drill", "-p", "5053", "cloudflare.com", "@127.0.0.1", "||", "exit", "1"]
+      interval: 20s
+      timeout: 20s
+      retries: 3
+      start_period: 5s
     image: djaydev/dnscrypt-proxy@sha256:66894f8c539917f6dc1a919a239d287e53ba88a832eb171e0210564ceb867171
     network_mode: "host"
     restart: unless-stopped
