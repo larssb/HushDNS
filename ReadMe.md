@@ -59,7 +59,7 @@ As the `dnscrypt-server` needs an `init` container, and that is [not supported][
 
 The `dnscrypt-proxy` instance uses [this][dnscrypt-proxy-container-image] container image. It acts as an encrypting intermediary DNS forwarder. Between a non-DoH/DoT/DNSCrypt supporting DNS recursive name-server (in the `HushDNS` case, its `Pi-hole`) and e.g. a `dnscrypt-server` instance or a service like [`CloudFlare's` 1.1.1.1 service][CloudFlare-1.1.1.1].
 
-1. Download [this docker-compose file][dnscrypt-proxyDockerComposeFile]
+1. Download [this docker-compose file][dnscrypt-proxyDockerComposeFile] (you'll be using your own `dnscrypt-server`)
 2. Execute: `docker-compose --project-name dnscrypt-proxy -f ./PATH_TO_THE_DNSCRYPT_PROXY_DOCKER_COMPOSE_FILE up -d`
    1. This will install `dnscrypt-proxy`. Name the compose "project" and container **dnscrypt-proxy** and detach from the container
 
@@ -92,7 +92,7 @@ As you saw in the section above. Configuring `dnscrypt-proxy` involves its `dnsc
 
 #### Running Pi-hole
 
-The ad blackhole system. Reduces your risk of being [PFL (page load finger printed)][PFL], blocks ads, speeds up the load-time of websites.
+The ad blackhole system. Reduces your risk of being [PLF (page load finger printed)][PFL], blocks ads, speeds up the load-time of websites.
 
 1. Download the [Pi-hole docker-compose file][pihole-docker-compose]
    1. Ensure to go through the template Pi-hole docker-compose file and change the necessary values accordingly
@@ -114,13 +114,13 @@ The ad blackhole system. Reduces your risk of being [PFL (page load finger print
 [dnscrypt-proxy-container-image]: https://github.com/djaydev/docker-dnscrypt-proxy
 [hush-dns-blog-post]: https://bengtssondd.it/anonymity/privacy/security/2020/04/02/HushDNS-can-I-please-get-me-some-DNS-privacy/
 [PFL]: https://blog.apnic.net/2019/08/23/what-can-you-learn-from-an-ip-address/
-[pihole-docker-compose]: https://github.com/larssb/HushDNS/blob/master/Unit-deployment/pi-hole/docker-compose.yml
+[pihole-docker-compose]: https://github.com/larssb/HushDNS/blob/master/unit-deployment/pi-hole/docker-compose.yml
 [CloudFlare-1.1.1.1]: https://developers.cloudflare.com/1.1.1.1/dns-over-https/cloudflared-proxy/
 [dnscrypt-server]: https://github.com/DNSCrypt/dnscrypt-server-docker
 [encrypted-dns-server-proxy]: https://github.com/jedisct1/encrypted-dns-server
 [docker-init-container]: https://github.com/docker/compose/issues/6855
-[dnscrypt-proxyDockerComposeFile]: https://github.com/larssb/HushDNS/blob/master/Unit-deployment/dnscrypt-proxy/docker-compose.yml
+[dnscrypt-proxyDockerComposeFile]: https://github.com/larssb/HushDNS/blob/master/unit-deployment/dnscrypt-proxy/provider-own-server/docker-compose.yml
 [considering-anonymized-dns]: https://bengtssondd.it/anonymity/privacy/security/2020/04/02/HushDNS-can-I-please-get-me-some-DNS-privacy/#considering-anonymized-dns-header
-[dnscrypt-proxy-toml-example]: https://github.com/larssb/HushDNS/blob/master/Unit-deployment/dnscrypt-proxy/provider-own-server/conf/dnscrypt-proxy.toml
+[dnscrypt-proxy-toml-example]: https://github.com/larssb/HushDNS/blob/master/unit-deployment/dnscrypt-proxy/provider-own-server/conf/dnscrypt-proxy.toml
 [Anonymized-DNS-relays]: https://github.com/DNSCrypt/dnscrypt-resolvers/blob/master/v2/relays.md
 [HAProxy]: http://www.haproxy.org/
