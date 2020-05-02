@@ -29,38 +29,20 @@ The [dnscrypt-server][dnscrypt-server] packs **unbound**, a DNS recursive name-s
 
 As the `dnscrypt-server` needs an `init` container, and that is [not supported][docker-init-container] by the `Docker` engine, you'll have to do with a shell script.
 
-1. Create a file with the following content. Ensure to update the placeholders (capital words, separated by an underscore) with actual useful values
-
-    ```bash
-    #!/bin/sh
-    # Set working dir to the dir of the script (POSIX/SH compatible)
-    cd "$(dirname "$(readlink -f "$0" || realpath "$0")")"
-
-    # Initialize the dnscrypt-server. Pre-requisite for running the full svc. afterwards
-    docker run --ulimit nofile=90000:90000 --name=dnscrypt-server -p 443:443/udp -p 443:443/tcp --net=host \
-    -v /LOCAL_CUSTOM_UNBOUND_CONF_DIR:/opt/unbound/etc/unbound/zones jedisct1/dnscrypt-server \
-    init -N NAME_TO_GIVE_YOUR_DNSCRYPT_SERVER -E WAN_IP_IN_FRONT_OF_THE_dnscrypt-server:443
-
-    # Start the dnscrypt-server
-    docker start dnscrypt-server
-
-    # Update the restart policy of the container
-    docker update --restart=unless-stopped dnscrypt-server
-    ```
-
-    1. Change the port of the `dnscrypt-server` if you need to (already have 'x' service running on port 443)
-    2. Make the file executable by executing: `sudo chmod +x ./THE_NAME_YOU_GAVE_THE_FILE`
-2. Execute the file on the system that is to host the `dnscrypt-server`
-3. Note down the output of the `init -N NAME_TO_GIVE_YOUR_DNSCRYPT_SERVER...` command as you need the info when configuring `dnscrypt-proxy`
+1. Download this [bash script][dnscrypt-server-bash-script] and ensure to update the placeholders (capital words, separated by an underscore) with actual useful values
+    1. Change the port of the `dnscrypt-server` if you need to (already have 'x' service running on port 443). Change from port 443 to "your" port, in **all** the locations where it is specified
+    1. Make the file executable by executing: `sudo chmod +x ./THE_NAME_YOU_GAVE_THE_FILE`
+1. Execute the file on the system that is to host the `dnscrypt-server`
+1. Note down the output of the `init -N NAME_TO_GIVE_YOUR_DNSCRYPT_SERVER...` command as you need the info when configuring `dnscrypt-proxy`
    1. you can also get the input after the fact by executing `docker logs dnscrypt-server`
-   2. The output to copy is the generated `stamp`. You need this in order to connect to the `dnscrypt-server` via the `dnscrypt-proxy` ... we will set the stamp when we install and configure the `dnscrypt-proxy` instance
+   1. The output to copy is the generated `stamp`. You need this in order to connect to the `dnscrypt-server` via the `dnscrypt-proxy` ... we will set the stamp when we install and configure the `dnscrypt-proxy` instance
 
 #### Running dnscrypt-proxy
 
 The `dnscrypt-proxy` instance uses [this][dnscrypt-proxy-container-image] container image. It acts as an encrypting intermediary DNS forwarder. Between a non-DoH/DoT/DNSCrypt supporting DNS recursive name-server (in the `HushDNS` case, its `Pi-hole`) and e.g. a `dnscrypt-server` instance or a service like [`CloudFlare's` 1.1.1.1 service][CloudFlare-1.1.1.1].
 
 1. Download [this docker-compose file][dnscrypt-proxyDockerComposeFile] (you'll be using your own `dnscrypt-server`)
-2. Execute: `docker-compose --project-name dnscrypt-proxy -f ./PATH_TO_THE_DNSCRYPT_PROXY_DOCKER_COMPOSE_FILE up -d`
+1. Execute: `docker-compose --project-name dnscrypt-proxy -f ./PATH_TO_THE_DNSCRYPT_PROXY_DOCKER_COMPOSE_FILE up -d`
    1. This will install `dnscrypt-proxy`. Name the compose "project" and container **dnscrypt-proxy** and detach from the container
 
 ##### Settings for the dnscrypt-proxy container
@@ -124,3 +106,4 @@ The ad blackhole system. Reduces your risk of being [PLF (page load finger print
 [dnscrypt-proxy-toml-example]: https://github.com/larssb/HushDNS/blob/master/unit-deployment/dnscrypt-proxy/provider-own-server/conf/dnscrypt-proxy.toml
 [Anonymized-DNS-relays]: https://github.com/DNSCrypt/dnscrypt-resolvers/blob/master/v2/relays.md
 [HAProxy]: http://www.haproxy.org/
+[dnscrypt-server-bash-script]: https://github.com/larssb/HushDNS/blob/master/unit-deployment/dnscrypt-server/setup.sh
