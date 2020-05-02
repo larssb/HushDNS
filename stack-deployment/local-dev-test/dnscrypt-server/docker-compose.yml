@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  dnscrypt-server:
+    image: jedisct1/dnscrypt-server
+    container_name: dnscrypt-server
+    restart: unless-stopped
+    ulimits:
+      nofile:
+        soft: 90000
+        hard: 90000
+    ports:
+      - 4443:443/udp
+      - 4443:443/tcp
+    networks:
+      piholed_static-network:
+        ipv4_address: 172.20.128.3
+    environment:
+      - TZ=Europe/Copenhagen
+    command: init -N hush.dns -E 172.20.128.3:4443
+
+networks:
+  piholed_static-network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.128.0/24
