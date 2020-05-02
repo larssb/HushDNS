@@ -5,10 +5,6 @@ services:
     image: jedisct1/dnscrypt-server
     container_name: dnscrypt-server
     restart: unless-stopped
-    ulimits:
-      nofile:
-        soft: 90000
-        hard: 90000
     ports:
       - 4443:443/udp
       - 4443:443/tcp
