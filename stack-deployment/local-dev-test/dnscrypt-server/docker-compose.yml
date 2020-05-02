@@ -13,15 +13,13 @@ services:
       - 4443:443/udp
       - 4443:443/tcp
     networks:
-      piholed_static-network:
+      static-network:
         ipv4_address: 172.20.128.3
     environment:
       - TZ=Europe/Copenhagen
     command: init -N hush.dns -E 172.20.128.3:4443
 
 networks:
-  piholed_static-network:
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.20.128.0/24
+  static-network:
+    external:
+      name: piholed_static-network
