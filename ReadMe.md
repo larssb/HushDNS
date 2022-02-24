@@ -6,9 +6,20 @@ This repository contains guidance on how-to get `HushDNS` up and running and the
 
 For an in depth detailed rundown of the ins and outs of the `HushDNS` components and the background of the **HushDNS** project. Read the initial [HushDNS blog post][hush-dns-blog-post].
 
+- [HushDNS](#hushdns)
+  - [Making it work for ya](#making-it-work-for-ya)
+    - [Prerequisites](#prerequisites)
+    - [Doin' it](#doin-it)
+      - [Running dnscrypt-server](#running-dnscrypt-server)
+      - [Running dnscrypt-proxy](#running-dnscrypt-proxy)
+        - [Settings for the dnscrypt-proxy container](#settings-for-the-dnscrypt-proxy-container)
+        - [OPTIONAL - Using `dnscrypt-proxy` together with your own `dnscrypt-server` - OPTIONAL](#optional---using-dnscrypt-proxy-together-with-your-own-dnscrypt-server---optional)
+      - [Running Pi-hole](#running-pi-hole)
+        - [Pi-hole configuration details](#pi-hole-configuration-details)
+
 ## Making it work for ya
 
-### Pre-requisites
+### Prerequisites
 
 1. `docker` have to be installed
 1. `docker-compose` as well
@@ -74,7 +85,7 @@ As you saw in the section above. Configuring `dnscrypt-proxy` involves its `dnsc
 
 #### Running Pi-hole
 
-The ad blackhole system. Reduces your risk of being [PLF (page load finger printed)][PFL], blocks ads, speeds up the load-time of websites.
+The ad blackhole system. Reduces your risk of being [PLF (page load finger printed)][PFL], blocks ads, and speeds up the load-time of websites.
 
 1. Download the [Pi-hole docker-compose file][pihole-docker-compose]
    1. Ensure to go through the template Pi-hole docker-compose file and change the necessary values accordingly
