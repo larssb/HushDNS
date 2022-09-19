@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  dnscrypt-server:
+    container_name: dnscrypt-server
+    ports:
+      - 5443:5443/udp
+      - 5443:5443/tcp
+    volumes:
+      - /LOCAL_CUSTOM_DNSCRYPT_SERVER_CONF_DIR/unbound-conf:/opt/unbound/etc/unbound/zones
+      - /LOCAL_CUSTOM_DNSCRYPT_SERVER_CONF_DIR/keys:/opt/encrypted-dns/etc/keys
+    image: nyvanga/dnscrypt-server:2022-10-11
+    restart: unless-stopped
+    command: ["start"]
