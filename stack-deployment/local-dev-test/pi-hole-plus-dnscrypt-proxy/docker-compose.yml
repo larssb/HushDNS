@@ -19,7 +19,7 @@ services:
       TZ: 'Europe/Copenhagen'
       WEB_PORT: "808"
     # Change the vX.X number to the Pi-Hole version you want
-    image: pihole/pihole:4.3.2-1
+    image: pihole/pihole:2022.09.4
     networks:
       static-network:
         ipv4_address: 172.20.128.1

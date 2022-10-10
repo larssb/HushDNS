@@ -17,7 +17,7 @@ services:
       TZ: 'Europe/Copenhagen'
       WEB_PORT: "808"
     # Change the vX.X number to the Pi-Hole version you want
-    image: pihole/pihole:v4.4
+    image: pihole/pihole:2022.09.4
     network_mode: "host"
     restart: unless-stopped
     # Volumes store your data between container upgrades
