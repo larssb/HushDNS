@@ -9,7 +9,7 @@ services:
       timeout: 20s
       retries: 3
       start_period: 5s
-    image: klutchell/dnscrypt-proxy:2.1.2
+    image: klutchell/dnscrypt-proxy:2.1.4
     network_mode: "host"
     restart: unless-stopped
     volumes:

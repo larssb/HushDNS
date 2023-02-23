@@ -6,6 +6,6 @@ services:
     environment:
       DNSCRYPT_LISTEN_PORT: "5353"
       DNSCRYPT_SERVER_NAMES: "['cloudflare']"
-    image: klutchell/dnscrypt-proxy:2.1.2
+    image: klutchell/dnscrypt-proxy:2.1.4
     network_mode: "host"
     restart: unless-stopped

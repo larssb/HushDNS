@@ -44,7 +44,7 @@ services:
     environment:
       DNSCRYPT_LISTEN_PORT: "5353"
       DNSCRYPT_SERVER_NAMES: "['hush.dns']"
-    image: klutchell/dnscrypt-proxy:2.1.2
+    image: klutchell/dnscrypt-proxy:2.1.4
     networks:
       static-network:
         ipv4_address: 172.20.128.2
